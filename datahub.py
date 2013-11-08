@@ -94,8 +94,11 @@ for dataset in datasets:
 	  print "URLError "+e1.reason+" while trying to access "+dsJSON["result"]["url"]
 	  nodes[dataset]["deadurls"] += 1
     else: nodes[dataset]["aliveurls"] += 1
+  except HTTPError as e:
+    print "HTTPError "+str(e.code)+" while trying to access "+dsJSON["result"]["url"]
+    nodes[dataset]["deadurls"] += 1
   except URLError as e:
-    print "URLError "+e.reason+" while trying to access "+dsJSON["result"]["url"]
+    print "URLError "+str(e.args)+" while trying to access "+dsJSON["result"]["url"]
     nodes[dataset]["deadurls"] += 1
   else: nodes[dataset]["aliveurls"] += 1
   
@@ -110,11 +113,14 @@ for dataset in datasets:
         print "HTTPError "+str(e1.code)+" while trying to access "+res["url"]
         nodes[dataset]["deadurls"] += 1
       except URLError as e1:
-        print "HTTPError "+e1.reason+" while trying to access "+res["url"]
+        print "URLError "+str(e1.args)+" while trying to access "+res["url"]
         nodes[dataset]["deadurls"] += 1
       else: nodes[dataset]["aliveurls"] += 1
+    except HTTPError as e:
+      print "HTTPError "+str(e.code) +" while trying to access "+res["url"]
+      nodes[dataset]["deadurls"] += 1
     except URLError as e:
-      print "URLError "+e.reason+" while trying to access "+res["url"]
+      print "URLError "+str(e.args) +" while trying to access "+res["url"]
       nodes[dataset]["deadurls"] += 1
     else: nodes[dataset]["aliveurls"] += 1
   print("alive: " +str(nodes[dataset]["aliveurls"])+"/"+str(nodes[dataset]["aliveurls"]+nodes[dataset]["deadurls"]))
