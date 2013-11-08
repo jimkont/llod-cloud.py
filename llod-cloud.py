@@ -29,9 +29,12 @@ for dataset in data.keys():
 
 for dataset in data.keys():
   for target,wt in data[dataset]["links"].items():
-    s = math.log10(float(wt))
-    e = g.add_edge(nodes[dataset],nodes[target])
-    edgesize[e] = edgeBaseSize * s
+    try:
+      e = g.add_edge(nodes[dataset],nodes[target])
+      s = math.log10(float(wt))
+      edgesize[e] = edgeBaseSize * s
+    except KeyError:
+      print "Reference to external resource: "+ target
   if "triples" in data[dataset].keys():
     s = float(data[dataset]["triples"])
     s = vertexBaseSize * math.pow(math.log10(s+1)+1,0.4)
